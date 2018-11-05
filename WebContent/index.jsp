@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <div id="footer">
-                <p>版权所有&copy2018-2019&nbsp;<span>王恺鹏工作室</span></p>
+                <p>版权所有&copy2018-2019&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: white">王恺鹏粉丝后援团</span></p>
             </div>
         </div>
          <script src="js/index.js"></script>

@@ -4,7 +4,7 @@
 body{
     background:url("../images/index_bg.jpg") no-repeat center;
     -moz-background-size:100% 100%;
-    background-size:100% 100%;
+    background-size:100% 142%;
     font-family: "微软雅黑";
     font-size: 14px;
     color:#FAFAFA
@@ -18,11 +18,22 @@ ul{display:block;list-style: none}
 #header{height:20px;margin:10px auto;padding:10px 0px}
 #header ul{float:right}
 #header ul li{float:left;margin-right:20px}
-#header ul li a{font-size: 16px; font-weight:blod;color:#FAFAFA}
+#header ul li a{
+    font-size: 16px;
+    font-weight: bold;
+    color:#FAFAFA
+}
 
 /*logo*/
 #logo{clear:both;height:80px;margin-top:90px}
-#logo h1{width:280px;height:80px;font-size:67px;font-family:fantasy; margin:0px auto;color:#BFB9B9}
+#logo h1{
+    width:280px;
+    height:80px;
+    font-size:67px;
+    font-family:fantasy;
+    margin:0px auto;
+    color:#FAFAFA
+}
 
 /*mainbody*/
 #mainbody{height:40px;width:766px;margin:10px auto}

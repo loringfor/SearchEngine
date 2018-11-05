@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +15,9 @@ import com.idc.service.impl.SearchServiceImpl;
 
 public class SnapShotServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 	private SearchService searchService=new SearchServiceImpl();
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String title=new String(request.getParameter("title").getBytes("iso-8859-1"),"utf-8");
 		byte[] content=searchService.getPageShot(title);
@@ -24,6 +25,7 @@ public class SnapShotServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/ErrorPage/resourceNotExist.jsp").forward(request, response);;
 			return;
 		}
+
 		InputStream in=new ByteArrayInputStream(content);
 		response.setContentType("text/html;charset=utf-8");
 		OutputStream out=response.getOutputStream();

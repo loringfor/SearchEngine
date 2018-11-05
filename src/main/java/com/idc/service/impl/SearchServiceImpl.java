@@ -8,9 +8,9 @@ import com.idc.domain.QueryResult;
 import com.idc.service.SearchService;
 
 public class SearchServiceImpl implements SearchService{
+
 	private HTMLIndexDao indexDao=new HTMLIndexDaoImpl();
-	
-	
+
 	//分页查询
 	public QueryResult<HTML> pagingSearch(String queryString,QueryResult<HTML> queryResult){
 		return indexDao.query(queryString,queryResult);

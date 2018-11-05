@@ -2,7 +2,8 @@
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="edu.dlnu.xeon.domain.HTML,java.util.List,edu.dlnu.xeon.domain.QueryResult"%>
+    pageEncoding="UTF-8" import="com.idc.domain.HTML,java.util.List,com.idc.domain.QueryResult"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -14,7 +15,7 @@
 		
 	}
 	#main{
-		width:1366px;
+		width:100%;
 		margin-left:120px;
 	}
 	#count{
@@ -60,7 +61,7 @@
 			QueryResult<HTML> queryResult=(QueryResult<HTML>)request.getAttribute("queryResult");
 			List<HTML> list=queryResult.getList();
 			int rowCount=queryResult.getRowCount();
-			String queryString=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"utf-8");
+			String queryString=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"gbk");
 		%>
 	<div id="main">
 		<br/>
@@ -90,17 +91,25 @@
 				}
 			%>
 		</table>
+
 		<table>
 			<tr>
 				<%
 					for(int i=0;i<queryResult.getPageCount();i++){
 				%>
-					<td><a id="pageNowUrl" href="<%=request.getContextPath()%>/pagingSearchServlet?pageNow=<%=i%>&&queryString=<%=queryString%>"><div id="pageNow"><%=i+1 %></div></a></div></td>
+					<td>
+						<a id="pageNowUrl" href="<%=request.getContextPath()%>/pagingSearchServlet?pageNow=<%=i%>&&queryString=<%=queryString%>">
+							<div id="pageNow">
+								<%=i+1 %>
+							</div>
+						</a>
+					</td>
 				<%
 					}
 				%>
 			</tr>
 		</table>
+
 	</div>
 </body>
 </html>

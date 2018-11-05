@@ -33,12 +33,14 @@ public class HBaseDaoImpl {
 	public static Configuration configuration;
 	public static HTablePool pool;
 	private static HBaseAdmin hBaseAdmin;
+	private static String hbaseIp = "192.168.1.109,192.168.1.127,192.168.1.128";
+
 	private String tableName;
 	static{
 		configuration=HBaseConfiguration.create();
 		configuration.set("hbase.zookeeper.property.clientPort", "2222");
-		configuration.set("hbase.zookeeper.quorum", "192.168.80.3");
-		configuration.set("hbase.master","192.168.80.3:9000");
+		configuration.set("hbase.zookeeper.quorum", hbaseIp);
+		configuration.set("hbase.master","192.168.1.109:9000");
 		pool=new HTablePool(configuration,1000);
 		try {
 			hBaseAdmin = new HBaseAdmin(configuration);
@@ -53,9 +55,9 @@ public class HBaseDaoImpl {
 	}
 	/**
 	 *创建表
-	 * @param tableName
+	 * @param args
 	 */
-	public  void createTable(String...args){
+	public  void createTable(String[] args){
 		System.out.println("start create table....");
 		try {
 			if(hBaseAdmin.tableExists(tableName)){
@@ -77,7 +79,7 @@ public class HBaseDaoImpl {
 	
 	/**
 	 * 插入数据
-	 * @param tableName
+	 * @param html
 	 */
 	public void insertData(HTML html){
 		System.out.println("start insert data....");
@@ -218,5 +220,4 @@ public class HBaseDaoImpl {
 			}
 		}
 	}
-	//组合查询
 }

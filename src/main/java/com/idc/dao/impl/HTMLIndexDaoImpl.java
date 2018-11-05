@@ -62,19 +62,22 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 	 */
 	
 	public QueryResult<HTML> query(String queryString,QueryResult<HTML> result){
+
 		List<HTML> list=new ArrayList<HTML>();
+
 		//1.首先转换查询对象(从多个字段中查询),则要用到QueryParser的子类MultiFieldQueryParser
 //		QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,new String[]{"title","content"}, LuceneUtils.getAnalyzer());
 		IndexSearcher indexSearcher=null;
 		int rowCount=0;
-		int first=result.getPageNow()*result.getPageSize();
+		int first=result.getPageNow() * result.getPageSize();
 		try {
 			Query query= IKQueryParser.parseMultiField(new String[]{"title","description"}, queryString);
+			// 索引搜索
 			indexSearcher=new IndexSearcher(LuceneUtils.getDirectory());
 			indexSearcher.setSimilarity(new IKSimilarity());
 			Sort sort = new Sort(new SortField("title", SortField.STRING, true));//设置排序条件
 			TopDocs topDocs=indexSearcher.search(query,null,first+result.getPageSize(),sort);
-			// ========================================================================================== 【创建高亮器】
+			//【创建高亮器】
 			Query myQuery = query; // 查询条件
 			String preTag = "<font color='red'>"; // 前缀
 			String postTag = "</font>"; // 后缀
@@ -84,19 +87,18 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 			Scorer scorer = new QueryScorer(myQuery);
 			Highlighter highlighter = new Highlighter(formatter, scorer);
 			highlighter.setTextFragmenter(new SimpleFragmenter(size)); // 摘要大小（字数）
-			// ==========================================================================================
 
 			rowCount=topDocs.totalHits;
-		//2.返回中间过程处理结果
+			//2.返回中间过程处理结果
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
 			HTML html=null;
-		//3.处理得到最终结果
+			//3.处理得到最终结果
 			int endIndex=Math.min(result.getPageSize()+first,scoreDocs.length);
 			for(int i=first;i<endIndex;i++){
 				int docId=scoreDocs[i].doc;
 				Document doc=indexSearcher.doc(docId);
 
-				// ======================================================================================== 【使用高亮器】
+				// 【使用高亮器】
 				// 一次高亮一个字段，返回高亮后的结果，如果要高亮的字段值中没有出现关键字，就会返回null
 				String text = highlighter.getBestFragment(LuceneUtils.getAnalyzer(), "description", doc.get("description"));
 				if (text != null) {
@@ -106,7 +108,6 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 				if (text != null) {
 					doc.getField("title").setValue(text);
 				}
-				// ========================================================================================
 
 				html=HTMLDocumentUtils.document2HTML(doc);
 				list.add(html);

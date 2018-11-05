@@ -50,9 +50,11 @@
 			font-family: "微软雅黑";
 		}
 		</style>
+
 		<script type="text/javascript">
 			function validate(){
 				var queryString=document.getElementById("search_input").value;
+				console.log(queryString);
 				if(queryString==""){
 					return false;
 				}else{
@@ -64,7 +66,8 @@
 
 	<body>
 		<%
-			String queryRecord=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"utf-8");
+			String queryRecord=new String(request.getParameter("queryString").getBytes(),"gbk");
+			System.out.println(queryRecord);
 		%>
 		<!--盒子模型 width：宽度 height：高度 放内容-->
 			<div id="logo">

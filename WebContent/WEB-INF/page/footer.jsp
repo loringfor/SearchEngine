@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">
 	body{
-		width:1366px;
-		height:80px;
+		width:100%;
+		height:100%;
 	}
 	#buttom{
 			width:1366px;
@@ -39,10 +39,10 @@
 <body>
 	<div id="buttom">
 			<div id="msg">
-				<h4>提示：使用快捷键 Ctrl+D 收藏本站，满意就赏个赞吧。</h4>
+				<h4 align="center">提示：满意就给小凯鹏点个赞吧</h4>
 			</div>
 			<div id="footer">
-				<h4>版权所有&copy2014-2015 <span>极易——Xeon工作室</span></h4>
+				<h4 align="center">版权所有&copy2018-2019&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: white">王恺鹏粉丝后援团</span></h4>
 			</div>
 		</div>
 </body>

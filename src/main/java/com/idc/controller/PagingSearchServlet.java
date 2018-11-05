@@ -12,9 +12,11 @@ import com.idc.domain.HTML;
 import com.idc.domain.QueryResult;
 import com.idc.service.SearchService;
 import com.idc.service.impl.SearchServiceImpl;
+
 //由于servlet的设计为单例模式，所以要继承SingleThreadModel接口，以防并发操作时共享资源出错
 @SuppressWarnings("deprecation")
 public class PagingSearchServlet extends HttpServlet implements SingleThreadModel{
+
 	private static final long serialVersionUID = 1L;
 	private SearchService searchService=new SearchServiceImpl();
 	
@@ -22,7 +24,7 @@ public class PagingSearchServlet extends HttpServlet implements SingleThreadMode
 		String pageNowStr=null;
 		String queryString=null;
 		QueryResult<HTML> queryResult=null;
-		queryString=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"utf-8");
+		queryString=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"gbk");
 		pageNowStr=request.getParameter("pageNow");
 		//验证queryString是否合法，有内容
 		if(queryString==null||queryString.trim().equals("")){
@@ -35,6 +37,7 @@ public class PagingSearchServlet extends HttpServlet implements SingleThreadMode
 				//验证传入的分页pageNow值是否合法
 				pageNow=Integer.parseInt(request.getParameter("pageNow"));
 			}catch(Exception e){
+				System.out.println("分页不合格");
 				request.getRequestDispatcher("/WEB-INF/ErrorPage/illegalOperation.jsp").forward(request, response);
 				return;
 			}
