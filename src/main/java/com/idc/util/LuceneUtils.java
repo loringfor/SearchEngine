@@ -17,7 +17,7 @@ public class LuceneUtils {
 	
 	static{
 		try {
-			directory=FSDirectory.open(new File("F:\\JavaEE-workspace\\Web\\SearchEngine\\indexDirectory"));
+			directory=FSDirectory.open(new File("C:\\Users\\Loring\\Desktop\\code\\SearchEngine\\indexDirectory"));
 			analyzer=new IKAnalyzer();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

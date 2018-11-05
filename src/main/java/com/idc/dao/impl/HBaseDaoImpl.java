@@ -99,7 +99,6 @@ public class HBaseDaoImpl {
 	
 	/**
 	 * 删除表格
-	 * @param tableName
 	 */
 	public void dropTable(){
 		try {
@@ -117,7 +116,6 @@ public class HBaseDaoImpl {
 	
 	/**
 	 * 根据行键删除某条记录
-	 * @param tableName
 	 * @param rowKey
 	 */
 	public  void deleteRow(String rowKey){
@@ -132,7 +130,6 @@ public class HBaseDaoImpl {
 	}
 	/**
 	 * 查询所有元素
-	 * @param tableName
 	 */
 	public List<HTML> queryAll(){
 		List<HTML> list=new ArrayList<HTML>();
@@ -174,7 +171,6 @@ public class HBaseDaoImpl {
 	
 	/**
 	 * 单条件单结果查询
-	 * @param tableName
 	 * @param rowKey
 	 */
 	public  HTML queryByRowKey(String rowKey){
@@ -199,8 +195,6 @@ public class HBaseDaoImpl {
 	}
 	/**
 	 * 单条件多结果查询
-	 * @param tableName
-	 * @param rowKey
 	 */
 	public  void queryByColumn(String key){
 		HTable table=(HTable)pool.getTable(tableName);
