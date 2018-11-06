@@ -56,6 +56,7 @@
 </style>
 <title>搜索结果</title>
 </head>
+
 <body>
 		<%
 			QueryResult<HTML> queryResult=(QueryResult<HTML>)request.getAttribute("queryResult");
@@ -65,7 +66,7 @@
 		%>
 	<div id="main">
 		<br/>
-		<span id="count">极易为您找到相关结果约<%=rowCount%>个</span>
+		<span id="count">鹏鹏为您找到相关结果约<%=rowCount%>个</span>
 		<br/><br/>
 		<table  cellpadding="0" cellspacing="0" width="45%">
 			<% 
@@ -82,7 +83,7 @@
 					<td><span id="description"><%=html.getDescription()%></span></td>
 				</tr>
 				<tr>
-					<td><span id="url_date"><%=html.getUrl().substring(7)%>...<%=date %></span><a id="snapShot" href="<%=request.getContextPath()%>/snapShotServlet?title=<%=title%>" target="_blank">极易快照</a></td>
+					<td><span id="url_date"><%=html.getUrl().substring(7)%>...<%=date %></span><a id="snapShot" href="<%=request.getContextPath()%>/snapShotServlet?title=<%=title%>" target="_blank">鹏鹏快照</a></td>
 				</tr>
 				<tr>
 					<td><br/></td>

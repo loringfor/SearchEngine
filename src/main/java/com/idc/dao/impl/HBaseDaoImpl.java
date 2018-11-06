@@ -4,66 +4,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HColumnDescriptor;
-import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.MasterNotRunningException;
-import org.apache.hadoop.hbase.ZooKeeperConnectionException;
-import org.apache.hadoop.hbase.client.Delete;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.HTablePool;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
-import org.apache.hadoop.hbase.filter.Filter;
-import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
-import org.apache.hadoop.hbase.util.Bytes;
-
 import com.idc.domain.HTML;
+import org.apache.hadoop.hbase.*;
+import org.apache.hadoop.hbase.client.*;
 
 
 public class HBaseDaoImpl {
-	public static Configuration configuration;
-	public static HTablePool pool;
-	private static HBaseAdmin hBaseAdmin;
+
+	private static TableName tableName=TableName.valueOf("html");
+	private static Connection conn;
 	private static String hbaseIp = "192.168.1.109,192.168.1.127,192.168.1.128";
 
-	private String tableName;
-	static{
-		configuration=HBaseConfiguration.create();
-		configuration.set("hbase.zookeeper.property.clientPort", "2222");
-		configuration.set("hbase.zookeeper.quorum", hbaseIp);
-		configuration.set("hbase.master","192.168.1.109:9000");
-		pool=new HTablePool(configuration,1000);
+	static  {
+		Configuration config = HBaseConfiguration.create();
+		config.set("hbase.rootdir","hdfs://192.168.1.109:9000/hbase");
+		config.set("hbase.zookeeper.quorum", hbaseIp);
 		try {
-			hBaseAdmin = new HBaseAdmin(configuration);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} 
+			conn = ConnectionFactory.createConnection(config);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	public HBaseDaoImpl(){}
-	
-	public HBaseDaoImpl(String tableName){
-		this.tableName=tableName;
-	}
+
+
 	/**
 	 *创建表
 	 * @param args
 	 */
 	public  void createTable(String[] args){
 		System.out.println("start create table....");
+        Admin hBaseAdmin = null;
 		try {
 			if(hBaseAdmin.tableExists(tableName)){
 				hBaseAdmin.disableTable(tableName);
 				hBaseAdmin.deleteTable(tableName);
-				System.out.println(tableName+"is exist,delete....");
+				System.out.println(tableName.toString()+"is exist,delete....");
 			}
 			HTableDescriptor tableDescriptor=new HTableDescriptor(tableName);
 			for(int i=0;i<args.length;i++){
@@ -83,8 +59,13 @@ public class HBaseDaoImpl {
 	 */
 	public void insertData(HTML html){
 		System.out.println("start insert data....");
-		HTable table=(HTable)pool.getTable(tableName);
-		Put put=new Put(html.getTitle().getBytes());
+        Table table= null;
+        try {
+            table = conn.getTable(tableName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Put put=new Put(html.getTitle().getBytes());
 		put.add("title".getBytes(), null,html.getTitle().getBytes());
 		put.add("description".getBytes(),null,html.getDescription().getBytes());
 		put.add("date".getBytes(),null,String.valueOf(html.getDate().getTime()).getBytes());
@@ -96,20 +77,20 @@ public class HBaseDaoImpl {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
 	}
 	
 	/**
 	 * 删除表格
 	 */
 	public void dropTable(){
+        Admin hBaseAdmin = null;
 		try {
 			if(hBaseAdmin.tableExists(tableName)){
 				hBaseAdmin.disableTable(tableName);
 				hBaseAdmin.deleteTable(tableName);
-				System.out.println(tableName+" has been deleted...");
+				System.out.println(tableName.toString()+" has been deleted...");
 			}else{
-				System.out.println(tableName+" does not exist...");
+				System.out.println(tableName.toString()+" does not exist...");
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -121,8 +102,9 @@ public class HBaseDaoImpl {
 	 * @param rowKey
 	 */
 	public  void deleteRow(String rowKey){
+
 		try {
-			HTable table = new HTable(configuration,tableName);
+			Table table =conn.getTable(tableName);
 			Delete delete=new Delete(rowKey.getBytes());
 			table.delete(delete);
 			System.out.println("delete row record success");
@@ -135,8 +117,13 @@ public class HBaseDaoImpl {
 	 */
 	public List<HTML> queryAll(){
 		List<HTML> list=new ArrayList<HTML>();
-		HTable table=(HTable)pool.getTable(tableName);
-		ResultScanner rs=null;
+        Table table = null;
+        try {
+            table = conn.getTable(tableName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ResultScanner rs=null;
 		String title=null;
 		String description=null;
 		String url=null;
@@ -176,8 +163,13 @@ public class HBaseDaoImpl {
 	 * @param rowKey
 	 */
 	public  HTML queryByRowKey(String rowKey){
-		HTable table=(HTable)pool.getTable(tableName);
-		Get get=new Get(rowKey.getBytes());
+        Table table = null;
+        try {
+            table = conn.getTable(tableName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Get get=new Get(rowKey.getBytes());
 		HTML html=null;
 		String key=null;
 		try {
@@ -198,26 +190,36 @@ public class HBaseDaoImpl {
 	/**
 	 * 单条件多结果查询
 	 */
-	public  void queryByColumn(String key){
-		HTable table=(HTable)pool.getTable(tableName);
-		Filter filter=new SingleColumnValueFilter(Bytes.toBytes("column1"), null, CompareOp.EQUAL, Bytes.toBytes(key));
-		Scan scan=new Scan();
-		scan.setFilter(filter);
-		ResultScanner rs=null;
-		try {
-			rs=table.getScanner(scan);
-			for(Result r:rs){
-				System.out.println("rowKey:"+new String(r.getRow()));
-				for(KeyValue keyValue:r.raw()){
-					System.out.println("raw:"+new String(keyValue.getFamily())+"===value:"+new String(keyValue.getValue()));
-				}
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}finally{
-			if(rs!=null){
-				rs.close();
-			}
-		}
+//	public  void queryByColumn(String key){
+//
+//        Table table =conn.getTable(TableName.valueOf(tableName));
+//		Filter filter=new SingleColumnValueFilter(Bytes.toBytes("column1"), null, CompareOp.EQUAL, Bytes.toBytes(key));
+//		Scan scan=new Scan();
+//		scan.setFilter(filter);
+//		ResultScanner rs=null;
+//		try {
+//			rs=table.getScanner(scan);
+//			for(Result r:rs){
+//				System.out.println("rowKey:"+new String(r.getRow()));
+//				for(KeyValue keyValue:r.raw()){
+//					System.out.println("raw:"+new String(keyValue.getFamily())+"===value:"+new String(keyValue.getValue()));
+//				}
+//			}
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}finally{
+//			if(rs!=null){
+//				rs.close();
+//			}
+//		}
+//	}
+
+	public static void main(String[] args) {
+		HBaseDaoImpl hBaseDao=new HBaseDaoImpl();
+		HTML html1=new HTML("poem test hhh wang","a description keep test",new Date(),"I just test this project!".getBytes(),"www.baidu.com");
+		HTML html2=new HTML("title xiang yulin","I do not know",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"www.hao123.com");
+		hBaseDao.insertData(html1);
+		hBaseDao.insertData(html2);
+
 	}
 }

@@ -3,7 +3,6 @@ package com.idc.dao.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
@@ -24,7 +23,6 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.util.NumericUtils;
 import org.wltea.analyzer.lucene.IKQueryParser;
 import org.wltea.analyzer.lucene.IKSimilarity;
-
 import com.idc.dao.HTMLIndexDao;
 import com.idc.domain.HTML;
 import com.idc.domain.QueryResult;
@@ -56,27 +54,26 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 	/**
 	 * 分页查询
 	 * @param queryString 执行查询的条件
-	 * @param first 为刚开始查询的记录索引
-	 * @param max 为查询的最大记录数
 	 * @return
 	 */
-	
 	public QueryResult<HTML> query(String queryString,QueryResult<HTML> result){
 
 		List<HTML> list=new ArrayList<HTML>();
 
 		//1.首先转换查询对象(从多个字段中查询),则要用到QueryParser的子类MultiFieldQueryParser
-//		QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,new String[]{"title","content"}, LuceneUtils.getAnalyzer());
+		//QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,new String[]{"title","content"}, LuceneUtils.getAnalyzer());
 		IndexSearcher indexSearcher=null;
 		int rowCount=0;
 		int first=result.getPageNow() * result.getPageSize();
 		try {
+			// 多字段，单条件查询
 			Query query= IKQueryParser.parseMultiField(new String[]{"title","description"}, queryString);
-			// 索引搜索
+			// 索引搜索，获得索引文件
 			indexSearcher=new IndexSearcher(LuceneUtils.getDirectory());
 			indexSearcher.setSimilarity(new IKSimilarity());
+
 			Sort sort = new Sort(new SortField("title", SortField.STRING, true));//设置排序条件
-			TopDocs topDocs=indexSearcher.search(query,null,first+result.getPageSize(),sort);
+			TopDocs topDocs=indexSearcher.search(query,null,first + result.getPageSize(),sort);
 			//【创建高亮器】
 			Query myQuery = query; // 查询条件
 			String preTag = "<font color='red'>"; // 前缀
@@ -93,11 +90,11 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
 			HTML html=null;
 			//3.处理得到最终结果
-			int endIndex=Math.min(result.getPageSize()+first,scoreDocs.length);
+			int endIndex=Math.min(result.getPageSize()+first,scoreDocs.length); // 最后索引
+
 			for(int i=first;i<endIndex;i++){
 				int docId=scoreDocs[i].doc;
 				Document doc=indexSearcher.doc(docId);
-
 				// 【使用高亮器】
 				// 一次高亮一个字段，返回高亮后的结果，如果要高亮的字段值中没有出现关键字，就会返回null
 				String text = highlighter.getBestFragment(LuceneUtils.getAnalyzer(), "description", doc.get("description"));
@@ -110,6 +107,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 				}
 
 				html=HTMLDocumentUtils.document2HTML(doc);
+				System.out.println("html search dao: "+ html.toString());
 				list.add(html);
 			}
 		} catch (Exception e) {
@@ -129,22 +127,23 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 	public QueryResult<HTML> query(String queryString){
 		List<HTML> list=new ArrayList<HTML>();
 		//1.首先转换查询对象(从多个字段中查询),则要用到QueryParser的子类MultiFieldQueryParser
-//		QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,, LuceneUtils.getAnalyzer());
+		//QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,, LuceneUtils.getAnalyzer());
 		IndexSearcher indexSearcher=null;
 		try {
 			Query query=IKQueryParser.parseMultiField(new String[]{"title","description"}, queryString);
 			indexSearcher=new IndexSearcher(LuceneUtils.getDirectory());
 			indexSearcher.setSimilarity(new IKSimilarity());
 			TopDocs topDocs=indexSearcher.search(query, 1000);
-		//2.返回中间过程处理结果
+			//2.返回中间过程处理结果
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
 			HTML html=null;
-		//3.处理得到最终结果
+			//3.处理得到最终结果
 			for(ScoreDoc scoreDoc:scoreDocs){
 				int docId=scoreDoc.doc;
 				Document doc=indexSearcher.doc(docId);
 				html=HTMLDocumentUtils.document2HTML(doc);
 				list.add(html);
+				System.out.println("simple query:"+html.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

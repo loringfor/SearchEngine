@@ -6,7 +6,7 @@
 		<!--charset-->
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 		<!--three key points-->
-		<title>极易搜索</title>
+		<title>鹏鹏搜索</title>
 		<meta name="Keywords" content="key"/>
 		<meta name="description" content="description"/>
 		<!--css js-->
@@ -71,7 +71,7 @@
 		%>
 		<!--盒子模型 width：宽度 height：高度 放内容-->
 			<div id="logo">
-				<span>极易搜索</span>
+				<span>鹏鹏搜索</span>
 			</div>
 			<div id="search">
 				<form action="pagingSearchServlet" onsubmit="return validate()">

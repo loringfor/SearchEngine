@@ -9,6 +9,7 @@ public class HTML {
 	private Date date;
 	private byte[] content;
 	private String url;
+
 	public HTML(String title, String description, Date date, byte[] content,
 			String url) {
 		this.title = title;
@@ -17,6 +18,7 @@ public class HTML {
 		this.content = content;
 		this.url = url;
 	}
+
 	public HTML(){}
 	
 	public String getUrl() {

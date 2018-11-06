@@ -3,6 +3,7 @@ package com.idc.util;
 import java.io.File;
 import java.io.IOException;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.store.Directory;
@@ -17,11 +18,11 @@ public class LuceneUtils {
 	static{
 		try {
 			directory=FSDirectory.open(new File("C:\\Users\\Loring\\Desktop\\code\\SearchEngine\\indexDirectory"));
-			analyzer=new IKAnalyzer();
+//			analyzer=new IKAnalyzer();// 中文分词器
+			analyzer=new SimpleAnalyzer();// 英文分词器
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
 	}
 	
 	public static IndexWriter getIndexWriter() {
@@ -32,26 +33,24 @@ public class LuceneUtils {
 					try {
 						indexWriter = new IndexWriter(directory, analyzer, MaxFieldLength.LIMITED);
 						indexWriter.setMergeFactor(5);
-						System.out.println("=== 已经初始化 IndexWriter ===");
+						System.out.println("=== initialize IndexWriter ===");
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
 				}
 			}
-
 			// 指定一段代码，会在JVM退出之前执行。
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
 					try {
 						indexWriter.close();
-						System.out.println("=== 已经关闭 IndexWriter ===");
+						System.out.println("=== close IndexWriter ===");
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
 				}
 			});
 		}
-
 		return indexWriter;
 	}
 	

@@ -8,7 +8,7 @@
     <artifactId>SearchEngine</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!--<dependencies>-->
+    <dependencies>
         <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.lucene/lucene-core &ndash;&gt;-->
         <!--<dependency>-->
             <!--<groupId>org.apache.lucene</groupId>-->
@@ -66,8 +66,21 @@
             <!--<scope>test</scope>-->
         <!--</dependency>-->
 
+        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.7.4</version>
+        </dependency>
 
-    <!--</dependencies>-->
+        <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+    </dependencies>
 
 
 </project>

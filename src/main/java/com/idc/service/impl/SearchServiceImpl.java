@@ -12,18 +12,24 @@ public class SearchServiceImpl implements SearchService{
 	private HTMLIndexDao indexDao=new HTMLIndexDaoImpl();
 
 	//分页查询
-	public QueryResult<HTML> pagingSearch(String queryString,QueryResult<HTML> queryResult){
-		return indexDao.query(queryString,queryResult);
+	public QueryResult<HTML> pagingSearch(String queryString,QueryResult<HTML> result){
+		return indexDao.query(queryString,result);
 	}
 	
 	//返回查询网页的快照
 	public byte[] getPageShot(String title){
-		HBaseDaoImpl hbaseDao=new HBaseDaoImpl("html");
+		HBaseDaoImpl hbaseDao=new HBaseDaoImpl();
 		HTML html=hbaseDao.queryByRowKey(title);
 		return html.getContent();
 	}
-//	public static void main(String args[]){
-//		List<HTML> list=new SearchServiceImpl().search("视频");
+
+
+	public QueryResult<HTML> pagingSearch(String queryString) {
+		return indexDao.query(queryString);
+	}
+
+	public static void main(String args[]){
+//		List<HTML> list=new SearchServiceImpl().pagingSearch("视频");
 //		System.out.println("总结果数："+list.size());
 //		for(HTML html:list){
 //			System.out.println("title:"+html.getTitle());
@@ -32,6 +38,6 @@ public class SearchServiceImpl implements SearchService{
 //			System.out.println("content:"+html.getContent());
 //			System.out.println("===========================================");
 //		}
-//	}
+	}
 	
 }

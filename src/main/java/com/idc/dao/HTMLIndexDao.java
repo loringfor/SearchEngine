@@ -9,4 +9,5 @@ public interface HTMLIndexDao {
 	
 	//分页查询,返回对象QueryResult来进行分页显示
 	QueryResult<HTML> query(String queryString,QueryResult<HTML> result);
+	QueryResult<HTML> query(String queryString);
 }
