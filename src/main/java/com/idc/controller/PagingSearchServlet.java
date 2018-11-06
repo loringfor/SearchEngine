@@ -45,8 +45,8 @@ public class PagingSearchServlet extends HttpServlet implements SingleThreadMode
 		}else{
 			queryResult=new QueryResult<HTML>();
 		}
-//		queryResult=searchService.pagingSearch(queryString,queryResult);
-		queryResult=searchService.pagingSearch(queryString);
+		queryResult=searchService.pagingSearch(queryString,queryResult);
+//		queryResult=searchService.pagingSearch(queryString);
 		request.setAttribute("queryResult", queryResult);
 		System.out.println("search servlet:" + queryResult.toString());
 		request.getRequestDispatcher("/WEB-INF/page/searchResult.jsp").forward(request, response);

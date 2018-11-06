@@ -24,20 +24,9 @@ public class SearchServiceImpl implements SearchService{
 	}
 
 
-	public QueryResult<HTML> pagingSearch(String queryString) {
-		return indexDao.query(queryString);
-	}
+//	public QueryResult<HTML> pagingSearch(String queryString) {
+//		return indexDao.query(queryString);
+//	}
 
-	public static void main(String args[]){
-//		List<HTML> list=new SearchServiceImpl().pagingSearch("视频");
-//		System.out.println("总结果数："+list.size());
-//		for(HTML html:list){
-//			System.out.println("title:"+html.getTitle());
-//			System.out.println("description:"+html.getDescription());
-//			System.out.println("date:"+html.getDate());
-//			System.out.println("content:"+html.getContent());
-//			System.out.println("===========================================");
-//		}
-	}
 	
 }

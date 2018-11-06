@@ -74,10 +74,11 @@
 				for(HTML html:list){
 					String date=format.format(html.getDate());
 					String title=html.getTitle();
+					System.out.println("front: "+ html.getUrl());
 					title=title.replaceAll("<font color='red'>"+queryString+"</font>",queryString);
 			%>
 				<tr>
-					<td><h4><a href=<%=html.getUrl()%> target="_blank"><%=html.getTitle()%></a></h4></td>
+					<td><h4><a href="<%=html.getUrl()%>"><%=html.getTitle()%></a></h4></td>
 				</tr>
 				<tr>
 					<td><span id="description"><%=html.getDescription()%></span></td>

@@ -10,12 +10,12 @@
 		height:100%;
 	}
 	#buttom{
-			width:1366px;
+			width:100%;
 			height:80px;
 			background: #333333;
 		}
 		#msg{
-			width:350px;
+			width:41%;
 			height:20px;
 			margin:60px 0px 0px 470px;
 		}
@@ -25,7 +25,7 @@
 			font-family: "微软雅黑";
 		}
 		#footer{
-			width:350px;
+			width:40%;
 			height:20px;
 			margin:20px 0px 0px 480px;
 		}
@@ -39,7 +39,7 @@
 <body>
 	<div id="buttom">
 			<div id="msg">
-				<h4 align="center">提示：满意就给小凯鹏点个赞吧</h4>
+				<h4 align="center">提示：我上王者了，满意就给我王恺鹏点个赞吧</h4>
 			</div>
 			<div id="footer">
 				<h4 align="center">版权所有&copy2018-2019&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: white">王恺鹏粉丝后援团</span></h4>

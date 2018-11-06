@@ -8,18 +8,14 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.Scorer;
 import org.apache.lucene.search.highlight.SimpleFragmenter;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.NumericUtils;
 import org.wltea.analyzer.lucene.IKQueryParser;
 import org.wltea.analyzer.lucene.IKSimilarity;
@@ -61,7 +57,6 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 		List<HTML> list=new ArrayList<HTML>();
 
 		//1.首先转换查询对象(从多个字段中查询),则要用到QueryParser的子类MultiFieldQueryParser
-		//QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,new String[]{"title","content"}, LuceneUtils.getAnalyzer());
 		IndexSearcher indexSearcher=null;
 		int rowCount=0;
 		int first=result.getPageNow() * result.getPageSize();
@@ -107,8 +102,8 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 				}
 
 				html=HTMLDocumentUtils.document2HTML(doc);
-				System.out.println("html search dao: "+ html.toString());
 				list.add(html);
+				System.out.println("not simple query:"+html.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,6 +119,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 		return new QueryResult<HTML>(list,rowCount);
 	}
 
+	// 没有高亮
 	public QueryResult<HTML> query(String queryString){
 		List<HTML> list=new ArrayList<HTML>();
 		//1.首先转换查询对象(从多个字段中查询),则要用到QueryParser的子类MultiFieldQueryParser
@@ -195,7 +191,5 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
 }

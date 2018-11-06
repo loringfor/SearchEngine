@@ -216,10 +216,18 @@ public class HBaseDaoImpl {
 
 	public static void main(String[] args) {
 		HBaseDaoImpl hBaseDao=new HBaseDaoImpl();
-		HTML html1=new HTML("poem test hhh wang","a description keep test",new Date(),"I just test this project!".getBytes(),"www.baidu.com");
-		HTML html2=new HTML("title xiang yulin","I do not know",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"www.hao123.com");
-		hBaseDao.insertData(html1);
-		hBaseDao.insertData(html2);
+//		HTML html1=new HTML("poem test hhh wang love wang meilin","I a know description keep test",new Date(),"I just test this project!".getBytes(),"http://www.baidu.com");
+//		HTML html2=new HTML("title xiang yulin love love","I do not know",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"http://www.hao123.com");
+
+//		HTML html1=new HTML("题目测试","一个描述，王恺鹏真的好帅",new Date(),"I just test this project!".getBytes(),"http://www.google.com");
+//		HTML html2=new HTML("题目真的是","我不知道，但我真的知道是王恺鹏真的好帅",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"http://www.hao123.com");
+//		hBaseDao.insertData(html1);
+//		hBaseDao.insertData(html2);
+		System.out.println("题目");
+		List<HTML> list=hBaseDao.queryAll();
+		for(HTML html:list){
+			System.out.println(html.toString());
+		}
 
 	}
 }
