@@ -20,13 +20,13 @@ public class SnapShotServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String title=new String(request.getParameter("title").getBytes("iso-8859-1"),"utf-8");
-		byte[] content=searchService.getPageShot(title);
+		String content=searchService.getPageShot(title);
 		if(content==null){
 			request.getRequestDispatcher("/WEB-INF/ErrorPage/resourceNotExist.jsp").forward(request, response);;
 			return;
 		}
 
-		InputStream in=new ByteArrayInputStream(content);
+		InputStream in=new ByteArrayInputStream(content.getBytes());
 		response.setContentType("text/html;charset=utf-8");
 		OutputStream out=response.getOutputStream();
 		byte[] b=new byte[1024];

@@ -7,10 +7,10 @@ public class HTML {
 	private String title;
 	private String description;
 	private Date date;
-	private byte[] content;
+	private String content;
 	private String url;
 
-	public HTML(String title, String description, Date date, byte[] content,
+	public HTML(String title, String description, Date date, String content,
 			String url) {
 		this.title = title;
 		this.description = description;
@@ -46,16 +46,16 @@ public class HTML {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public byte[] getContent() {
+	public String getContent() {
 		return content;
 	}
-	public void setContent(byte[] content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 	@Override
 	public String toString() {
 		return "HTML [title=" + title + ", description=" + description
-				+ ", date=" + date + ", content=" + Arrays.toString(content)
+				+ ", date=" + date + ", content=" + content
 				+ ", url=" + url + "]";
 	}
 	

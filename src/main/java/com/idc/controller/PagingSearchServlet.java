@@ -24,7 +24,8 @@ public class PagingSearchServlet extends HttpServlet implements SingleThreadMode
 		String pageNowStr=null;
 		String queryString=null;
 		QueryResult<HTML> queryResult=null;
-		queryString=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"gbk");
+		queryString=new String(request.getParameter("queryString").getBytes("UTF-8"),"UTF-8");
+		System.out.println("controller queryString:"+queryString);
 		pageNowStr=request.getParameter("pageNow");
 		//验证queryString是否合法，有内容
 		if(queryString==null||queryString.trim().equals("")){
@@ -46,9 +47,9 @@ public class PagingSearchServlet extends HttpServlet implements SingleThreadMode
 			queryResult=new QueryResult<HTML>();
 		}
 		queryResult=searchService.pagingSearch(queryString,queryResult);
+		System.out.println("查询内容："+queryResult.getList().get(1).getContent());
 //		queryResult=searchService.pagingSearch(queryString);
 		request.setAttribute("queryResult", queryResult);
-		System.out.println("search servlet:" + queryResult.toString());
 		request.getRequestDispatcher("/WEB-INF/page/searchResult.jsp").forward(request, response);
 		return;
 	}

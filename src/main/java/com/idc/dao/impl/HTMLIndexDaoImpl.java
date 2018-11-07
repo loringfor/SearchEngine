@@ -38,6 +38,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 		IndexWriter indexWriter=LuceneUtils.getIndexWriter();
 		try {
 			indexWriter.addDocument(doc);//添加
+			System.out.println("doc-----"+ doc.toString());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -53,7 +54,6 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 	 * @return
 	 */
 	public QueryResult<HTML> query(String queryString,QueryResult<HTML> result){
-
 		List<HTML> list=new ArrayList<HTML>();
 
 		//1.首先转换查询对象(从多个字段中查询),则要用到QueryParser的子类MultiFieldQueryParser
@@ -62,7 +62,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 		int first=result.getPageNow() * result.getPageSize();
 		try {
 			// 多字段，单条件查询
-			Query query= IKQueryParser.parseMultiField(new String[]{"title","description"}, queryString);
+			Query query= IKQueryParser.parseMultiField(new String[]{"title","content"}, queryString);
 			// 索引搜索，获得索引文件
 			indexSearcher=new IndexSearcher(LuceneUtils.getDirectory());
 			indexSearcher.setSimilarity(new IKSimilarity());
@@ -81,6 +81,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 			highlighter.setTextFragmenter(new SimpleFragmenter(size)); // 摘要大小（字数）
 
 			rowCount=topDocs.totalHits;
+
 			//2.返回中间过程处理结果
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
 			HTML html=null;
@@ -92,9 +93,9 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 				Document doc=indexSearcher.doc(docId);
 				// 【使用高亮器】
 				// 一次高亮一个字段，返回高亮后的结果，如果要高亮的字段值中没有出现关键字，就会返回null
-				String text = highlighter.getBestFragment(LuceneUtils.getAnalyzer(), "description", doc.get("description"));
+				String text = highlighter.getBestFragment(LuceneUtils.getAnalyzer(), "content", doc.get("content"));
 				if (text != null) {
-					doc.getField("description").setValue(text); // 使用高亮后的文本替换原始内容
+					doc.getField("content").setValue(text); // 使用高亮后的文本替换原始内容
 				}
 				text=highlighter.getBestFragment(LuceneUtils.getAnalyzer(), "title", doc.get("title"));
 				if (text != null) {
@@ -103,7 +104,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 
 				html=HTMLDocumentUtils.document2HTML(doc);
 				list.add(html);
-				System.out.println("not simple query:"+html.toString());
+//				System.out.println("not simple query:"+ html.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,7 +127,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 		//QueryParser queryParser=new MultiFieldQueryParser(Version.LUCENE_30,, LuceneUtils.getAnalyzer());
 		IndexSearcher indexSearcher=null;
 		try {
-			Query query=IKQueryParser.parseMultiField(new String[]{"title","description"}, queryString);
+			Query query=IKQueryParser.parseMultiField(new String[]{"title","content"}, queryString);
 			indexSearcher=new IndexSearcher(LuceneUtils.getDirectory());
 			indexSearcher.setSimilarity(new IKSimilarity());
 			TopDocs topDocs=indexSearcher.search(query, 1000);
@@ -191,5 +192,6 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 			e.printStackTrace();
 		}
 	}
+
 
 }

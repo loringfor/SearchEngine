@@ -17,7 +17,7 @@ public class SearchServiceImpl implements SearchService{
 	}
 	
 	//返回查询网页的快照
-	public byte[] getPageShot(String title){
+	public String getPageShot(String title){
 		HBaseDaoImpl hbaseDao=new HBaseDaoImpl();
 		HTML html=hbaseDao.queryByRowKey(title);
 		return html.getContent();

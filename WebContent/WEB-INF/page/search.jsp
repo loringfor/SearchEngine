@@ -67,7 +67,7 @@
 	<body>
 		<%
 			String queryRecord=new String(request.getParameter("queryString").getBytes(),"gbk");
-			System.out.println(queryRecord);
+			System.out.println("前端："+ queryRecord);
 		%>
 		<!--盒子模型 width：宽度 height：高度 放内容-->
 			<div id="logo">

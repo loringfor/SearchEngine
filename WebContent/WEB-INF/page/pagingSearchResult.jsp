@@ -62,7 +62,7 @@
 			QueryResult<HTML> queryResult=(QueryResult<HTML>)request.getAttribute("queryResult");
 			List<HTML> list=queryResult.getList();
 			int rowCount=queryResult.getRowCount();
-			String queryString=new String(request.getParameter("queryString").getBytes("iso-8859-1"),"gbk");
+			String queryString=new String(request.getParameter("queryString").getBytes("UTF-8"),"UTF-8");
 		%>
 	<div id="main">
 		<br/>
@@ -81,7 +81,7 @@
 					<td><h4><a href="<%=html.getUrl()%>"><%=html.getTitle()%></a></h4></td>
 				</tr>
 				<tr>
-					<td><span id="description"><%=html.getDescription()%></span></td>
+					<td><span id="description"><%=html.getContent()%></span></td>
 				</tr>
 				<tr>
 					<td><span id="url_date"><%=html.getUrl().substring(7)%>...<%=date %></span><a id="snapShot" href="<%=request.getContextPath()%>/snapShotServlet?title=<%=title%>" target="_blank">鹏鹏快照</a></td>

@@ -9,5 +9,5 @@ public interface SearchService {
 //	QueryResult<HTML> pagingSearch(String queryString);
 	
 	//根据rowkey获得网页快照内容，此处rowkey为标题.getBytes()
-	byte[] getPageShot(String title);
+	String getPageShot(String title);
 }

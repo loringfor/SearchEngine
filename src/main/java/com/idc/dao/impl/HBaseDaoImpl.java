@@ -69,7 +69,7 @@ public class HBaseDaoImpl {
 		put.add("title".getBytes(), null,html.getTitle().getBytes());
 		put.add("description".getBytes(),null,html.getDescription().getBytes());
 		put.add("date".getBytes(),null,String.valueOf(html.getDate().getTime()).getBytes());
-		put.add("content".getBytes(),null,html.getContent());
+		put.add("content".getBytes(),null,html.getContent().getBytes());
 		put.add("url".getBytes(), null, html.getUrl().getBytes());
 		try {
 			table.put(put);
@@ -128,6 +128,7 @@ public class HBaseDaoImpl {
 		String description=null;
 		String url=null;
 		Date date=null;
+		String content=null;
 		HTML html=null;
 		try {
 			rs=table.getScanner(new Scan());
@@ -140,11 +141,15 @@ public class HBaseDaoImpl {
 						description=new String(keyValue.getValue());
 					}else if(key.equals("date")){
 						date=new Date(Long.parseLong(new String(keyValue.getValue())));
-					}else{
+					}
+					else if("content".equals(key)){
+						content=new String(keyValue.getValue());
+					}else
+					{
 						url=new String(keyValue.getValue());
 					}
 				}
-				html=new HTML(title,description,date,null,url);
+				html=new HTML(title,description,date,content,url);
 				System.out.println(html);
 				list.add(html);
 			}
@@ -178,7 +183,7 @@ public class HBaseDaoImpl {
 				key=new String(keyValue.getFamily());
 				if(key.equals("content")){
 					html=new HTML();
-					html.setContent(keyValue.getValue());
+					html.setContent(new String(keyValue.getValue()));
 					break;
 				}
 			}
@@ -215,18 +220,25 @@ public class HBaseDaoImpl {
 //	}
 
 	public static void main(String[] args) {
+
 		HBaseDaoImpl hBaseDao=new HBaseDaoImpl();
 //		HTML html1=new HTML("poem test hhh wang love wang meilin","I a know description keep test",new Date(),"I just test this project!".getBytes(),"http://www.baidu.com");
 //		HTML html2=new HTML("title xiang yulin love love","I do not know",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"http://www.hao123.com");
-
-//		HTML html1=new HTML("题目测试","一个描述，王恺鹏真的好帅",new Date(),"I just test this project!".getBytes(),"http://www.google.com");
-//		HTML html2=new HTML("题目真的是","我不知道，但我真的知道是王恺鹏真的好帅",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"http://www.hao123.com");
+//
+//		HTML html3=new HTML("题目测试","一个描述，王恺鹏真的好帅，真的，骗你是小狗！",new Date(),"I just test this project!".getBytes(),"http://www.google.com");
+//		HTML html4=new HTML("题目真的是","我不知道，但我真的知道是王恺鹏真的好帅",new Date(),"Kaipeng wang is a gay!He loves men!".getBytes(),"http://www.163.com");
 //		hBaseDao.insertData(html1);
 //		hBaseDao.insertData(html2);
-		System.out.println("题目");
+//		hBaseDao.insertData(html3);
+//		hBaseDao.insertData(html4);
+
+		HTML html5=new HTML("测试一下","这是一个描述，但是好像并没有什么卵用，应该直接显示content",new Date(),"这是真正的内容，这才是真的有效的，偷偷的告诉你们，其实王恺鹏是个gay，真的。","http://www.hust.edu.cn");
+		hBaseDao.insertData(html5);
+
 		List<HTML> list=hBaseDao.queryAll();
 		for(HTML html:list){
 			System.out.println(html.toString());
+			System.out.println(html.getContent());
 		}
 
 	}
