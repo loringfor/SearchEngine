@@ -22,7 +22,8 @@ public class IndexServiceImpl {
 	public void optimize() throws IOException{
 		LuceneUtils.getIndexWriter().optimize();
 	}
-	
+
+	//建立倒排索引
 	public static void main(String args[]) throws IOException{
 		new IndexServiceImpl().createIndex();
 	}

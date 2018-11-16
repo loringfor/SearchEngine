@@ -2,7 +2,6 @@ package com.idc.dao.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import com.idc.domain.HTML;
@@ -68,7 +67,7 @@ public class HBaseDaoImpl {
         Put put=new Put(html.getTitle().getBytes());
 		put.add("title".getBytes(), null,html.getTitle().getBytes());
 		put.add("description".getBytes(),null,html.getDescription().getBytes());
-		put.add("date".getBytes(),null,String.valueOf(html.getDate().getTime()).getBytes());
+		put.add("date".getBytes(),null,String.valueOf(html.getDate()).getBytes());
 		put.add("content".getBytes(),null,html.getContent().getBytes());
 		put.add("url".getBytes(), null, html.getUrl().getBytes());
 		try {
@@ -127,7 +126,7 @@ public class HBaseDaoImpl {
 		String title=null;
 		String description=null;
 		String url=null;
-		Date date=null;
+		String date=null;
 		String content=null;
 		HTML html=null;
 		try {
@@ -140,7 +139,7 @@ public class HBaseDaoImpl {
 					}else if(key.equals("description")){
 						description=new String(keyValue.getValue());
 					}else if(key.equals("date")){
-						date=new Date(Long.parseLong(new String(keyValue.getValue())));
+						date=new String(keyValue.getValue());
 					}
 					else if("content".equals(key)){
 						content=new String(keyValue.getValue());
@@ -232,14 +231,16 @@ public class HBaseDaoImpl {
 //		hBaseDao.insertData(html3);
 //		hBaseDao.insertData(html4);
 
-		HTML html5=new HTML("测试一下","这是一个描述，但是好像并没有什么卵用，应该直接显示content",new Date(),"这是真正的内容，这才是真的有效的，偷偷的告诉你们，其实王恺鹏是个gay，真的。","http://www.hust.edu.cn");
-		hBaseDao.insertData(html5);
+//		HTML html5=new HTML("王恺鹏粉丝","这是一个描述，但是好像并没有什么卵用，应该直接显示content",new Date(),"这是真正的内容，这才是真的有效的，偷偷的告诉你们，其实王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。王恺鹏是个gay，真的。","http://www.hust.edu.cn");
+//		hBaseDao.insertData(html5);
 
-		List<HTML> list=hBaseDao.queryAll();
-		for(HTML html:list){
-			System.out.println(html.toString());
-			System.out.println(html.getContent());
-		}
+//		List<HTML> list=hBaseDao.queryAll();
+//		for(HTML html:list){
+//			System.out.println(html.toString());
+//			System.out.println(html.getContent());
+//		}
+
+		hBaseDao.dropTable();
 
 	}
 }

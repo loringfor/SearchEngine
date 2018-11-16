@@ -1,16 +1,13 @@
 package com.idc.domain;
 
-import java.util.Arrays;
-import java.util.Date;
-
 public class HTML {
 	private String title;
 	private String description;
-	private Date date;
+	private String date;
 	private String content;
 	private String url;
 
-	public HTML(String title, String description, Date date, String content,
+	public HTML(String title, String description, String date, String content,
 			String url) {
 		this.title = title;
 		this.description = description;
@@ -40,10 +37,10 @@ public class HTML {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public String getContent() {

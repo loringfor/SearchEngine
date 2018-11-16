@@ -46,8 +46,10 @@ public class PagingSearchServlet extends HttpServlet implements SingleThreadMode
 		}else{
 			queryResult=new QueryResult<HTML>();
 		}
+		// 传入result是里面有页码
 		queryResult=searchService.pagingSearch(queryString,queryResult);
-		System.out.println("查询内容："+queryResult.getList().get(1).getContent());
+//		System.out.println("查询内容："+queryResult.getList().get(1).getContent());
+		System.out.println("controller中的数量-----"+ queryResult.getList().size());
 //		queryResult=searchService.pagingSearch(queryString);
 		request.setAttribute("queryResult", queryResult);
 		request.getRequestDispatcher("/WEB-INF/page/searchResult.jsp").forward(request, response);

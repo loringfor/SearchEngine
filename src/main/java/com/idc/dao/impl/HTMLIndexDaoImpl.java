@@ -44,7 +44,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 		}
 	}
 	
-	public void indexCommit() throws CorruptIndexException, IOException{
+	public void indexCommit() throws IOException{
 		LuceneUtils.getIndexWriter().commit();
 	}
 	
@@ -68,22 +68,30 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 			indexSearcher.setSimilarity(new IKSimilarity());
 
 			Sort sort = new Sort(new SortField("title", SortField.STRING, true));//设置排序条件
+			// 查询前n条数据
 			TopDocs topDocs=indexSearcher.search(query,null,first + result.getPageSize(),sort);
+
 			//【创建高亮器】
 			Query myQuery = query; // 查询条件
 			String preTag = "<font color='red'>"; // 前缀
 			String postTag = "</font>"; // 后缀
-			int size = 40; // 摘要大小
+			int size = 80; // 摘要大小
 
 			Formatter formatter = new SimpleHTMLFormatter(preTag, postTag); // 前缀、后缀
 			Scorer scorer = new QueryScorer(myQuery);
 			Highlighter highlighter = new Highlighter(formatter, scorer);
 			highlighter.setTextFragmenter(new SimpleFragmenter(size)); // 摘要大小（字数）
 
+			/*
+			注意：
+				Search方法需要指定匹配记录数量n：indexSearcher.search(query, n)
+				TopDocs.totalHits：是匹配索引库中所有记录的数量
+				TopDocs.scoreDocs：匹配相关度高的前边记录数组，scoreDocs的长度小于等于search方法指定的参数n
+			*/
 			rowCount=topDocs.totalHits;
-
 			//2.返回中间过程处理结果
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
+			System.out.println("score length:"+scoreDocs.length);
 			HTML html=null;
 			//3.处理得到最终结果
 			int endIndex=Math.min(result.getPageSize()+first,scoreDocs.length); // 最后索引
@@ -104,7 +112,7 @@ public class HTMLIndexDaoImpl implements HTMLIndexDao{
 
 				html=HTMLDocumentUtils.document2HTML(doc);
 				list.add(html);
-//				System.out.println("not simple query:"+ html.toString());
+				System.out.println("not simple query DAO:"+ html.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

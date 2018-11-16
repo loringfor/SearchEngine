@@ -26,8 +26,8 @@
             </div>
             <div id="bottom">
                 <ul>
-                    <li><a href="#">关于凯鹏</a></li>
-                    <li><a href="#">凯鹏主页</a></li>
+                    <li><a href="#">关于恺鹏</a></li>
+                    <li><a href="#">恺鹏主页</a></li>
                 </ul>
             </div>
             <div id="footer">

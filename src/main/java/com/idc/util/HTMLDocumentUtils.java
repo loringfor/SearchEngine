@@ -1,13 +1,10 @@
 package com.idc.util;
 
-import java.util.Date;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.util.NumericUtils;
-import org.jruby.util.Numeric;
 
 import com.idc.domain.HTML;
 
@@ -36,7 +33,7 @@ public class HTMLDocumentUtils {
 		doc.add(new Field("title",html.getTitle(),Store.YES,Index.ANALYZED));
 		doc.add(new Field("description",html.getDescription(),Store.YES,Index.ANALYZED));
 		doc.add(new Field("content",html.getContent(),Store.YES,Index.ANALYZED));
-		doc.add(new Field("date",NumericUtils.longToPrefixCoded(html.getDate().getTime()),Store.YES,Index.NO));
+		doc.add(new Field("date",html.getDate(),Store.YES,Index.NO));
 		doc.add(new Field("url",html.getUrl(),Store.YES,Index.NO));
 		System.out.println(doc.toString());
 		return doc;
@@ -46,7 +43,7 @@ public class HTMLDocumentUtils {
 		String title=doc.get("title");
 		String description=doc.get("description");
 		String content=doc.get("content");
-		Date date=new Date(NumericUtils.prefixCodedToLong(doc.get("date")));
+		String date=doc.get("date");
 		String url=doc.get("url");
 		HTML html=new HTML(title,description,date,content,url);
 		return html;

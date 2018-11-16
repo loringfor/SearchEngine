@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <servlet>
+    <description></description>
+    <display-name>SnapShotServlet</display-name>
+    <!--给servlet取名，任意 -->
+    <servlet-name>SnapShotServlet</servlet-name>
+    <!-- 指明servlet路径，包名.类名 -->
+    <servlet-class>com.idc.controller.SnapShotServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <!--servlet映射，必须与servlet-name同名 -->
+    <servlet-name>SnapShotServlet</servlet-name>
+    <!--这是浏览器中输入的访问该servlet的url-->
+    <url-pattern>/snapShotServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <description></description>
+    <display-name>PagingSearchServlet</display-name>
+    <servlet-name>PagingSearchServlet</servlet-name>
+    <servlet-class>com.idc.controller.PagingSearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PagingSearchServlet</servlet-name>
+    <url-pattern>/pagingSearchServlet</url-pattern>
+  </servlet-mapping>
+
+  <!-- 针对404错误的处理 -->
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/WEB-INF/ErrorPage/404Error.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/WEB-INF/ErrorPage/500Error.jsp</location>
+  </error-page>
+</web-app>

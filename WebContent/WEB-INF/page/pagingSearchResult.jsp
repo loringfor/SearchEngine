@@ -23,7 +23,7 @@
 		font-family:"微软雅黑";
 		color:#999999;
 	}
-	#description{
+	#content{
 		font-size:16px;
 		font-family:"微软雅黑";
 	}
@@ -38,17 +38,18 @@
 		font-family:"微软雅黑";
 	}
 	#pageNow{
-		font-size:18px;
+		font-size:15px;
+		font-weight: bold;
 		font-family:"微软雅黑";
 		border:1px solid #999999;
-		width:30px;
-		height:30px;
-		margin-right:20px;
-		padding:0px 0px 5px 5px;
+		width:20px;
+		height:20px;
+		margin-right:10px;
+		padding:3px 3px 3px 3px;
 	}
 	#pageNowUrl{
 		text-decoration: none;
-		color:#999999;
+		color:#000000;
 	}
 	h4{
 		font-family:"微软雅黑";
@@ -61,6 +62,7 @@
 		<%
 			QueryResult<HTML> queryResult=(QueryResult<HTML>)request.getAttribute("queryResult");
 			List<HTML> list=queryResult.getList();
+//			System.out.println("前端，页面数量"+list.size());
 			int rowCount=queryResult.getRowCount();
 			String queryString=new String(request.getParameter("queryString").getBytes("UTF-8"),"UTF-8");
 		%>
@@ -69,19 +71,18 @@
 		<span id="count">鹏鹏为您找到相关结果约<%=rowCount%>个</span>
 		<br/><br/>
 		<table  cellpadding="0" cellspacing="0" width="45%">
-			<% 
-				SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+			<%
 				for(HTML html:list){
-					String date=format.format(html.getDate());
+					String date=html.getDate();
 					String title=html.getTitle();
-					System.out.println("front: "+ html.getUrl());
+//					System.out.println("front: "+ html.getContent());
 					title=title.replaceAll("<font color='red'>"+queryString+"</font>",queryString);
 			%>
 				<tr>
 					<td><h4><a href="<%=html.getUrl()%>"><%=html.getTitle()%></a></h4></td>
 				</tr>
 				<tr>
-					<td><span id="description"><%=html.getContent()%></span></td>
+					<td><span id="content"><%=html.getContent()%></span></td>
 				</tr>
 				<tr>
 					<td><span id="url_date"><%=html.getUrl().substring(7)%>...<%=date %></span><a id="snapShot" href="<%=request.getContextPath()%>/snapShotServlet?title=<%=title%>" target="_blank">鹏鹏快照</a></td>
@@ -94,6 +95,9 @@
 			%>
 		</table>
 
+		<br/>
+		<p style="font-weight: bold">鹏鹏搜索，就是这么强👍</p>
+		<br/>
 		<table>
 			<tr>
 				<%
@@ -101,7 +105,7 @@
 				%>
 					<td>
 						<a id="pageNowUrl" href="<%=request.getContextPath()%>/pagingSearchServlet?pageNow=<%=i%>&&queryString=<%=queryString%>">
-							<div id="pageNow">
+							<div id="pageNow" align="center">
 								<%=i+1 %>
 							</div>
 						</a>
